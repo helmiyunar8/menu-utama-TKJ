@@ -35,6 +35,28 @@ font-size:18px;
 </head>
 
 <body>
+<script>
+
+let bukaTryout = new Date("2026-03-12 08:00:00")
+let sekarang = new Date()
+
+if(sekarang < bukaTryout){
+
+document.getElementById("status2").innerHTML="🔒 Minggu 2 : belum dibuka"
+
+document.getElementById("link2").onclick=function(){
+alert("Tryout Minggu 2 baru dibuka pada 12 Maret 2026")
+}
+
+}else{
+
+document.getElementById("status2").innerHTML="🟡 Minggu 2 : aktif"
+
+document.getElementById("link2").href="../tryout-tkj-XII-2026/minggu2.html"
+
+}
+
+</script>
 
 <div class="container">
 
@@ -47,6 +69,24 @@ font-size:18px;
 <a class="menu" href="../tryout-tkj-XII-2026/ranking_minggu2.html">🏆 Ranking Tryout</a>
 
 <br>
+<h3>Status Tryout</h3>
+
+<p>🟢 Minggu 1 : selesai</p>
+<p id="status2">🔒 Minggu 2 : belum dibuka</p>
+
+<br>
+
+<a class="menu" href="../tryout-tkj-XII-2026/minggu1.html">
+Tryout Minggu 1
+</a>
+
+<a class="menu" id="link2">
+Tryout Minggu 2
+</a>
+
+<a class="menu" href="../tryout-tkj-XII-2026/ranking_minggu2.html">
+🏆 Ranking Tryout
+</a>
 
 <a class="menu" href="index.html">⬅ Kembali ke LMS</a>
 
