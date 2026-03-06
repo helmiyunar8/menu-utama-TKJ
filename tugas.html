@@ -1,1 +1,67 @@
+<!DOCTYPE html>
 
+<html>
+<head>
+<title>Kirim Tugas</title>
+
+<style>
+
+body{
+font-family:Arial;
+background:#0f2a44;
+color:white;
+padding:40px;
+}
+
+input, textarea{
+width:300px;
+padding:8px;
+margin:8px 0;
+}
+
+button{
+padding:10px 20px;
+background:#ffd166;
+border:none;
+border-radius:6px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>Kirim Tugas</h1>
+
+<p>Nama</p>
+<input type="text" id="nama">
+
+<p>Kelas</p>
+<input type="text" id="kelas">
+
+<p>Link Foto / Google Drive Tugas</p>
+<textarea id="tugas"></textarea>
+
+<br>
+
+<button onclick="kirim()">Kirim</button>
+
+<h3 id="status"></h3>
+
+<script>
+
+function kirim(){
+
+document.getElementById("status").innerHTML="Tugas berhasil dikirim";
+
+}
+
+</script>
+
+<br><br>
+
+<a href="index.html">⬅ Kembali ke Beranda</a>
+
+</body>
+</html>
