@@ -94,30 +94,41 @@ function buatSertifikat(){
 var nama = document.getElementById("nama").value;
 var nilai = document.getElementById("hasil").innerText;
 
-var isi = `
-SERTIFIKAT KELULUSAN QUIZ TKJ
+var canvas = document.createElement("canvas");
+canvas.width = 800;
+canvas.height = 500;
 
-Diberikan kepada:
+var ctx = canvas.getContext("2d");
 
-${nama}
+ctx.fillStyle = "#ffffff";
+ctx.fillRect(0,0,800,500);
 
-Telah menyelesaikan Quiz TKJ
-dengan hasil:
+ctx.fillStyle = "#000000";
 
-${nilai}
+ctx.font = "bold 40px Arial";
+ctx.textAlign = "center";
+ctx.fillText("SERTIFIKAT QUIZ TKJ",400,100);
 
-SMKN 7 LUWU
-Guru : Helmi Yunar, S.Pd.
-NIP  : 198808082023212068 
-`;
+ctx.font = "20px Arial";
+ctx.fillText("Diberikan kepada",400,170);
 
-var file = new Blob([isi], {type:"text/plain"});
-var a = document.createElement("a");
+ctx.font = "bold 30px Arial";
+ctx.fillText(nama,400,220);
 
-a.href = URL.createObjectURL(file);
-a.download = "sertifikat_tkj.txt";
+ctx.font = "20px Arial";
+ctx.fillText("Telah menyelesaikan Quiz TKJ",400,270);
 
-a.click();
+ctx.fillText(nilai,400,310);
+
+ctx.fillText("SMKN 7 LUWU",400,380);
+
+ctx.fillText("Guru : Helmi Yunar",400,420);
+
+var link = document.createElement("a");
+link.download = "sertifikat_tkj.png";
+link.href = canvas.toDataURL();
+
+link.click();
 
 }
 
