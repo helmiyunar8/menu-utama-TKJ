@@ -53,6 +53,26 @@ document.getElementById("hasil").innerHTML = "Nilai kamu : " + nilai;
 <body>
 
 <h1>Quiz TKJ</h1>
+  <h2 id="timer">Waktu : 10:00</h2>
+var waktu = 600;
+
+function hitung(){
+var menit = Math.floor(waktu/60);
+var detik = waktu%60;
+
+document.getElementById("timer").innerHTML =
+"Waktu : " + menit + ":" + detik;
+
+waktu--;
+
+if(waktu < 0){
+alert("Waktu habis!");
+}
+
+}
+
+setInterval(hitung,1000);
+
 
 <p>1. Apa kepanjangan LAN?</p>
 <input type="radio" name="q1" value="A"> Local Area Network<br>
