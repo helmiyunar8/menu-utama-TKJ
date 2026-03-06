@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<title>Quiz TKJ</title>
+
+<style>
+
+body{
+font-family:Arial;
+background:#0f2a44;
+color:white;
+padding:40px;
+}
+
+button{
+padding:10px 20px;
+margin-top:20px;
+font-size:16px;
+background:#ffd166;
+border:none;
+border-radius:6px;
+}
+
+</style>
+
+<script>
+
+function cekJawaban(){
+
+var nilai = 0;
+
+var q1 = document.querySelector('input[name="q1"]:checked').value;
+
+if(q1=="A"){
+nilai = nilai + 100;
+}
+
+document.getElementById("hasil").innerHTML = "Nilai kamu : " + nilai;
+
+}
+
+</script>
+
+</head>
+
+<body>
+
+<h1>Quiz TKJ</h1>
+
+<p>1. Apa kepanjangan LAN?</p>
+
+<input type="radio" name="q1" value="A"> Local Area Network<br> <input type="radio" name="q1" value="B"> Large Area Network<br> <input type="radio" name="q1" value="C"> Long Area Network<br>
+
+<br>
+
+<button onclick="cekJawaban()">Cek Jawaban</button>
+
+<h2 id="hasil"></h2>
+
+<br>
+
+<a href="materi.html">⬅ Kembali ke Materi</a>
+
+</body>
+</html>
