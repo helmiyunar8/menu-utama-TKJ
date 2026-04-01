@@ -1,151 +1,198 @@
 <!DOCTYPE html>
-
-<html>
+<html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tryout TKJ</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tryout Center - Helmi Yunar</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --gold: #D4AF37;
+            --dark-blue: #0f2a44;
+            --white: #ffffff;
+            --bg-light: #f4f7f6;
+            --sidebar-width: 280px;
+        }
 
-<style>
-.menu{
-margin-top:5px;
-}
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Arial, sans-serif; }
 
-.menu a{
-text-decoration:none;
-color:#333;
-font-weight:bold;
-margin-right:10px;
-}
+        body { background-color: var(--bg-light); display: flex; min-height: 100vh; color: #333; }
 
-.menu a:hover{
-color:#007bff;
-}
-body{
-font-family:Arial;
-background:#0f2c44;
-text-align:center;
-color:white;
-}
+        /* SIDEBAR */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: var(--white);
+            height: 100vh;
+            position: fixed;
+            border-right: 1px solid #ddd;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            transition: 0.3s;
+        }
 
-.container{
-max-width:500px;
-margin:auto;
-padding:20px;
-}
+        .sidebar-header { padding: 30px 20px; text-align: center; border-bottom: 2px solid #f9f9f9; }
+        .sidebar-header img { width: 60px; margin-bottom: 10px; }
+        .sidebar-header h3 { font-size: 20px; color: var(--gold); font-weight: 800; }
 
-.menu{
-display:block;
-background:#1f4b6b;
-padding:15px;
-margin:10px;
-border-radius:10px;
-text-decoration:none;
-color:white;
-font-size:18px;
-}
+        .nav-menu { padding: 20px 0; flex-grow: 1; }
+        .nav-item {
+            display: flex; align-items: center; padding: 15px 25px;
+            color: #444; text-decoration: none; font-weight: 600; transition: 0.3s;
+        }
+        .nav-item i { margin-right: 15px; width: 20px; text-align: center; }
+        .nav-item:hover, .nav-item.active { background: #fffcf0; color: var(--gold); border-left: 5px solid var(--gold); }
 
-</style>
+        /* MAIN CONTENT */
+        .main-content { flex-grow: 1; margin-left: var(--sidebar-width); padding: 25px; width: 100%; }
 
+        .topbar {
+            background: var(--white); padding: 15px 30px; border-radius: 15px;
+            display: flex; justify-content: space-between; align-items: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 25px;
+        }
+
+        /* DASHBOARD TRYOUT */
+        .header-section { text-align: center; margin-bottom: 30px; }
+        .header-section h2 { font-size: 28px; color: var(--dark-blue); font-weight: 800; }
+        
+        .status-container {
+            display: flex; justify-content: center; gap: 15px; margin-top: 15px; flex-wrap: wrap;
+        }
+        .status-pill {
+            padding: 6px 15px; border-radius: 20px; font-size: 13px; font-weight: 700;
+            display: flex; align-items: center; gap: 8px; border: 1px solid #eee;
+        }
+        .pill-done { background: #e8f5e9; color: #2e7d32; }
+        .pill-active { background: #fff8e1; color: #f57f17; }
+        .pill-locked { background: #ffebee; color: #c62828; }
+
+        .grid-tryout {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px; max-width: 1000px; margin: 0 auto;
+        }
+
+        .card {
+            background: var(--white); padding: 25px; border-radius: 20px;
+            text-decoration: none; color: inherit; border: 1px solid #eee;
+            transition: 0.3s; text-align: center; display: flex; flex-direction: column; align-items: center;
+        }
+        .card:hover { transform: translateY(-10px); border-color: var(--gold); box-shadow: 0 15px 30px rgba(0,0,0,0.05); }
+        
+        .icon-box {
+            width: 60px; height: 60px; background: #fffcf0; border-radius: 15px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 24px; color: var(--gold); margin-bottom: 15px;
+        }
+
+        .card h4 { font-size: 18px; margin-bottom: 8px; color: var(--dark-blue); }
+        .card p { font-size: 14px; color: #777; margin-bottom: 20px; }
+
+        .btn-start {
+            width: 100%; padding: 10px; border-radius: 10px;
+            background: var(--gold); color: white; font-weight: 700; font-size: 14px;
+        }
+        .btn-locked { background: #eee; color: #999; cursor: not-allowed; }
+        .btn-guru { background: var(--dark-blue); color: white; }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .sidebar { left: -100%; }
+            .main-content { margin-left: 0; }
+        }
+    </style>
 </head>
-
 <body>
-<!-- NAVBAR GLOBAL LMS -->
 
-<style>
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/Logo_SMK.png" alt="Logo">
+            <h3>LMS TKJ</h3>
+        </div>
+        <div class="nav-menu">
+            <a href="/index.html" class="nav-item"><i class="fas fa-home"></i> Beranda</a>
+            <a href="/materi/index.html" class="nav-item"><i class="fas fa-book"></i> Materi</a>
+            <a href="/menu-utama-TKJ/tryout.html" class="nav-item active"><i class="fas fa-edit"></i> Tryout</a>
+            <a href="/lkpd/index.html" class="nav-item"><i class="fas fa-file-alt"></i> LKPD</a>
+            <a href="/absen/index.html" class="nav-item"><i class="fas fa-camera"></i> Absen</a>
+            <a href="/tryout-tkj-XII-2026/ranking_minggu2.html" class="nav-item"><i class="fas fa-trophy"></i> Ranking</a>
+        </div>
+    </nav>
 
-.navbar{
-background:#2c7a4b;
-padding:12px;
-text-align:center;
-}
+    <div class="main-content">
+        <div class="topbar">
+            <div style="font-weight: 800; color: var(--gold);">SMKN 7 LUWU</div>
+            <div style="font-size: 14px; font-weight: 600;">Pusat Tryout Siswa</div>
+        </div>
 
-.navbar a{
-color:white;
-text-decoration:none;
-margin:6px;
-padding:8px 12px;
-display:inline-block;
-font-size:14px;
-border-radius:6px;
-}
+        <div class="header-section">
+            <h2>📝 DASHBOARD TRYOUT</h2>
+            <div class="status-container">
+                <div class="status-pill pill-done"><i class="fas fa-check-circle"></i> Minggu 1: Selesai</div>
+                <div id="status2-pill" class="status-pill pill-locked"><i class="fas fa-lock"></i> Minggu 2: Terkunci</div>
+            </div>
+        </div>
 
-.navbar a:hover{
-background:#1e5b37;
-}
+        <div class="grid-tryout">
+            <a href="../tryout-tkj-XII-2026/minggu1.html" class="card">
+                <div class="icon-box"><i class="fas fa-history"></i></div>
+                <h4>Tryout Minggu 1</h4>
+                <p>Materi Dasar Jaringan & KIK</p>
+                <div class="btn-start" style="background:#2e7d32">Review</div>
+            </a>
 
-</style>
+            <div class="card" id="card2">
+                <div class="icon-box"><i class="fas fa-star" id="icon2"></i></div>
+                <h4>Tryout Minggu 2</h4>
+                <p>Materi Lanjutan & Troubleshooting</p>
+                <a id="link2" class="btn-start btn-locked" style="text-decoration:none">Belum Dibuka</a>
+            </div>
 
-<div class="navbar">
+            <a href="../tryout-tkj-XII-2026/ranking_minggu2.html" class="card">
+                <div class="icon-box"><i class="fas fa-award"></i></div>
+                <h4>Hasil Ranking</h4>
+                <p>Lihat perolehan skor minggu ini</p>
+                <div class="btn-start">Buka Ranking</div>
+            </a>
 
-<a href="/index.html">🏠 Beranda</a>
+            <a href="../tryout-tkj-XII-2026/monitor.html" class="card">
+                <div class="icon-box" style="color:var(--dark-blue)"><i class="fas fa-desktop"></i></div>
+                <h4>Monitor Ujian</h4>
+                <p>Khusus akses Guru / Admin</p>
+                <div class="btn-start btn-guru">Akses Guru</div>
+            </a>
+        </div>
+    </div>
 
-<a href="/materi/index.html">📚 Materi</a>
+    <script>
+        // LOGIKA JADWAL PAK HELMI
+        let bukaTryout = new Date("2026-03-12 07:00:00");
+        let sekarang = new Date();
 
-<a href="/menu-utama-TKJ/tryout.html">📝 Tryout</a>
+        const statusPill = document.getElementById("status2-pill");
+        const link2 = document.getElementById("link2");
+        const icon2 = document.getElementById("icon2");
 
-<a href="/lkpd/index.html">📄 LKPD</a>
-
-<a href="/absen/index.html">📷 Absen</a>
-
-<a href="/tryout-tkj-XII-2026/ranking_minggu2.html">🏆 Ranking</a>
-
-</div>
-
-</div>
-<div class="container">
-
-<h2>📝 TRYOUT TKJ</h2>
-
-<h3>Status Tryout</h3>
-
-<p>🟢 Minggu 1 : selesai</p>
-<p id="status2">🔒 Minggu 2 : belum dibuka</p>
-
-<br>
-
-<a class="menu" href="../tryout-tkj-XII-2026/minggu1.html">
-Tryout Minggu 1
-</a>
-
-<a class="menu" id="link2">
-Tryout Minggu 2
-</a>
-
-<a class="menu" href="../tryout-tkj-XII-2026/ranking_minggu2.html">
-🏆 Ranking Tryout minggu 2_40
-</a>
-<a class="menu" href="../tryout-tkj-XII-2026/monitor.html">
-📊 Monitor Ujian (Guru)
-</a>
-<a class="menu" href="/index.html">
-⬅ Kembali ke LMS
-</a>
-
-</div>
-
-<script>
-
-let bukaTryout = new Date("2026-03-12 07:00:00")
-let sekarang = new Date()
-
-if(sekarang < bukaTryout){
-
-document.getElementById("status2").innerHTML="🔒 Minggu 2 : belum dibuka"
-
-document.getElementById("link2").onclick=function(){
-alert("Tryout Minggu 2 baru dibuka pada 12 Maret 2026")
-}
-
-}else{
-
-document.getElementById("status2").innerHTML="🟡 Minggu 2 : aktif"
-
-document.getElementById("link2").href="../tryout-tkj-XII-2026/minggu2.html"
-
-}
-
-</script>
-
+        if(sekarang < bukaTryout){
+            // Kondisi Terkunci
+            statusPill.className = "status-pill pill-locked";
+            statusPill.innerHTML = '<i class="fas fa-lock"></i> Minggu 2: Belum Dibuka';
+            
+            link2.onclick = function(){
+                alert("Sabar ya! Tryout Minggu 2 baru dibuka pada 12 Maret 2026 jam 07:00");
+            }
+        } else {
+            // Kondisi Aktif
+            statusPill.className = "status-pill pill-active";
+            statusPill.innerHTML = '<i class="fas fa-unlock"></i> Minggu 2: Sedang Aktif';
+            
+            icon2.style.color = "#f57f17";
+            link2.href = "../tryout-tkj-XII-2026/minggu2.html";
+            link2.innerHTML = "Mulai Ujian Sekarang";
+            link2.className = "btn-start";
+            link2.style.background = "#D4AF37";
+        }
+    </script>
 </body>
 </html>
