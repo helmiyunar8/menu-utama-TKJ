@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Leaderboard TKJ - Helmi Yunar</title>
+    <title>Leaderboard TKJ - Ibu Helmi Yunar</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
@@ -11,60 +11,116 @@
             --gold: #D4AF37;
             --silver: #C0C0C0;
             --bronze: #CD7F32;
-            --dark-blue: #0f2a44;
             --white: #ffffff;
-            --glass: rgba(255, 255, 255, 0.1);
+            --dark-blue: #0f2a44;
+            --bg-light: #f4f7f6;
+            --sidebar-width: 280px;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Arial, sans-serif; }
 
-        body {
+        body { 
             background: linear-gradient(135deg, #0f2a44 0%, #1a4d8c 100%);
             background-attachment: fixed;
-            color: var(--white);
-            min-height: 100vh;
-            padding-bottom: 50px;
+            display: flex; 
+            min-height: 100vh; 
+            color: var(--white); 
+            overflow-x: hidden;
         }
 
-        /* NAVBAR KONSISTEN */
-        .navbar {
-            background: var(--white);
-            padding: 12px 5%;
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            flex-wrap: wrap;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            position: sticky;
-            top: 0;
+        /* --- SIDEBAR NAVIGATION (SYNC BLUEPRINT) --- */
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
             z-index: 1000;
         }
+        .sidebar-overlay.active { display: block; }
 
-        .navbar a {
-            color: var(--dark-blue);
+        .sidebar {
+            width: var(--sidebar-width);
+            background: var(--white);
+            height: 100vh;
+            position: fixed;
+            transition: all 0.3s ease;
+            z-index: 1001;
+            display: flex;
+            flex-direction: column;
+            color: #333;
+        }
+
+        .close-sidebar {
+            display: none;
+            position: absolute;
+            top: 15px; right: 15px;
+            font-size: 28px;
+            color: var(--gold);
+            cursor: pointer;
+            z-index: 1002;
+        }
+
+        .sidebar-header {
+            padding: 35px 20px;
+            text-align: center;
+            border-bottom: 2px solid #f9f9f9;
+            position: relative;
+        }
+        .sidebar-header img { width: 75px; margin-bottom: 12px; }
+        .sidebar-header h3 { font-size: 22px; color: var(--gold); font-weight: 800; }
+        .sidebar-header p { font-size: 14px; color: #777; font-weight: 600; }
+
+        .nav-menu { padding: 25px 0; flex-grow: 1; overflow-y: auto; }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 18px 25px;
+            color: #444;
             text-decoration: none;
-            padding: 8px 15px;
-            font-size: 13px;
-            font-weight: 700;
-            border-radius: 8px;
+            transition: 0.3s;
+            font-size: 18px;
+            font-weight: 600;
+        }
+        .nav-item i { margin-right: 18px; width: 25px; text-align: center; font-size: 20px; color: #777; }
+        .nav-item:hover, .nav-item.active {
+            background: #fffcf0;
+            color: var(--gold);
+            border-left: 6px solid var(--gold);
+        }
+
+        /* --- CONTENT AREA --- */
+        .main-content {
+            flex-grow: 1;
+            margin-left: var(--sidebar-width);
+            padding: 25px;
+            width: 100%;
             transition: 0.3s;
         }
 
-        .navbar a:hover { background: #f0f0f0; color: var(--gold); }
-
-        /* HEADER */
-        .header-box {
-            text-align: center;
-            padding: 40px 20px;
+        /* TOPBAR (SYNC BLUEPRINT) */
+        .topbar {
+            background: var(--white);
+            padding: 18px 30px;
+            border-radius: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            color: #333;
         }
+        .menu-toggle { display: none; font-size: 24px; cursor: pointer; color: var(--gold); }
+
+        /* LEADERBOARD BOX */
+        .header-box { text-align: center; padding: 20px 0 40px 0; }
         .header-box i { font-size: 50px; color: var(--gold); margin-bottom: 15px; }
         .header-box h1 { font-size: 32px; letter-spacing: 1px; }
 
-        /* TABEL RANKING MEWAH */
         .leaderboard-container {
-            max-width: 600px;
+            max-width: 700px;
             margin: 0 auto;
-            background: var(--glass);
+            background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(15px);
             border-radius: 25px;
             padding: 20px;
@@ -72,147 +128,113 @@
             box-shadow: 0 20px 40px rgba(0,0,0,0.4);
         }
 
-        table {
-            width: 100%;
-            border-collapse: separate;
-            border-spacing: 0 10px;
-        }
+        table { width: 100%; border-collapse: separate; border-spacing: 0 10px; }
+        th { text-transform: uppercase; font-size: 12px; letter-spacing: 2px; padding: 15px; color: var(--gold); text-align: left; }
+        td { padding: 15px; background: rgba(255,255,255,0.05); transition: 0.3s; }
 
-        th {
-            text-transform: uppercase;
-            font-size: 12px;
-            letter-spacing: 2px;
-            padding: 15px;
-            color: var(--gold);
-            text-align: left;
-        }
-
-        td {
-            padding: 15px;
-            background: rgba(255,255,255,0.05);
-            transition: 0.3s;
-        }
-
-        /* Efek Rounded Corners untuk Baris */
         tr td:first-child { border-radius: 15px 0 0 15px; font-weight: 800; text-align: center; width: 60px; }
         tr td:last-child { border-radius: 0 15px 15px 0; font-weight: 800; text-align: center; color: var(--gold); }
-
         tr:hover td { background: rgba(255,255,255,0.15); transform: scale(1.02); }
 
-        /* STYLE KHUSUS 3 BESAR */
         .rank-1 { background: linear-gradient(90deg, rgba(212,175,55,0.2), transparent) !important; border: 1px solid var(--gold) !important; }
-        .rank-1 td:first-child { color: var(--gold); font-size: 20px; }
-
         .rank-2 { background: linear-gradient(90deg, rgba(192,192,192,0.2), transparent) !important; }
-        .rank-2 td:first-child { color: var(--silver); }
-
         .rank-3 { background: linear-gradient(90deg, rgba(205,127,50,0.2), transparent) !important; }
-        .rank-3 td:first-child { color: var(--bronze); }
 
-        .loading-text { font-style: italic; opacity: 0.6; }
-
-        .footer-link {
-            display: inline-block;
-            margin-top: 30px;
-            color: var(--white);
-            text-decoration: none;
-            font-weight: 600;
-            opacity: 0.7;
-            transition: 0.3s;
-        }
-        .footer-link:hover { opacity: 1; color: var(--gold); }
-
-        @media (max-width: 500px) {
-            .leaderboard-container { width: 95%; padding: 10px; }
-            th, td { padding: 10px; font-size: 14px; }
+        /* RESPONSIVE MOBILE */
+        @media (max-width: 768px) {
+            .menu-toggle, .close-sidebar { display: block; }
+            .sidebar { left: -100%; box-shadow: 5px 0 15px rgba(0,0,0,0.3); }
+            .sidebar.active { left: 0 !important; }
+            .main-content { margin-left: 0; padding: 15px; }
+            .header-box h1 { font-size: 24px; }
         }
     </style>
 
     <script>
         async function loadRanking(){
             const url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSqs-8lunzd77k36faD8j7x91EBYMbSRFViD5gB04kGdSmi4DCKPikzC4QqhotF2QjDkbmZm7i-R3OJ/pub?gid=1337124987&single=true&output=csv";
-
             try {
                 const res = await fetch(url);
                 const text = await res.text();
                 const rows = text.trim().split("\n").slice(1);
-
                 let data = rows.map(r => {
-                    // Penanganan jika CSV menggunakan koma atau titik koma
                     const c = r.split(/,|;/); 
                     return {
                         nama: c[0].replace(/"/g, ""),
                         nilai: parseInt(c[2]) || 0
                     };
                 });
-
-                // Urutkan nilai tertinggi
                 data.sort((a,b) => b.nilai - a.nilai);
-
                 let html = "";
                 for(let i=0; i<data.length; i++){
                     let rowClass = "";
                     let icon = i + 1;
-
-                    // Tambahkan Medali untuk Top 3
                     if(i === 0) { rowClass = "rank-1"; icon = "🥇"; }
                     else if(i === 1) { rowClass = "rank-2"; icon = "🥈"; }
                     else if(i === 2) { rowClass = "rank-3"; icon = "🥉"; }
-
-                    html += `<tr class="${rowClass}">`;
-                    html += `<td>${icon}</td>`;
-                    html += `<td>${data[i].nama}</td>`;
-                    html += `<td>${data[i].nilai}</td>`;
-                    html += `</tr>`;
+                    html += `<tr class="${rowClass}"><td>${icon}</td><td>${data[i].nama}</td><td>${data[i].nilai}</td></tr>`;
                 }
-
                 document.getElementById("ranking").innerHTML = html;
             } catch (error) {
                 document.getElementById("ranking").innerHTML = "<tr><td colspan='3'>Gagal memuat data. Periksa koneksi internet.</td></tr>";
             }
         }
+
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('active');
+            document.getElementById('sidebarOverlay').classList.toggle('active');
+        }
     </script>
 </head>
-
 <body onload="loadRanking()">
 
-    <div class="navbar">
-        <a href="/index.html">🏠 BERANDA</a>
-        <a href="/materi/index.html">📚 MATERI</a>
-        <a href="/menu-utama-TKJ/tryout.html">📝 TRYOUT</a>
-        <a href="/lkpd/index.html">📄 LKPD</a>
-        <a href="/absen/index.html">📷 ABSEN</a>
-    </div>
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
 
-    <div class="header-box">
-        <i class="fas fa-trophy"></i>
-        <h1>LEADERBOARD QUIZ</h1>
-        <p>SMKN 7 LUWU - Jaringan Komputer</p>
-    </div>
+    <nav class="sidebar" id="sidebar">
+        <div class="close-sidebar" onclick="toggleSidebar()"><i class="fas fa-times"></i></div>
+        <div class="sidebar-header">
+            <img src="/asset/logo.png" alt="Logo" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/6/6b/Logo_SMK.png'">
+            <h3>LMS TKJ</h3>
+            <p>SMKN 7 LUWU</p>
+        </div>
+        <div class="nav-menu">
+            <a href="/index.html" class="nav-item"><i class="fas fa-home"></i> Beranda</a>
+            <a href="/materi/index.html" class="nav-item"><i class="fas fa-book-open"></i> Materi</a>
+            <a href="/menu-utama-TKJ/tryout.html" class="nav-item"><i class="fas fa-edit"></i> Tryout</a>
+            <a href="/lkpd/index.html" class="nav-item"><i class="fas fa-file-signature"></i> LKPD</a>
+            <a href="/absen/index.html" class="nav-item"><i class="fas fa-camera-retro"></i> Absen</a>
+            <a href="#" class="nav-item active"><i class="fas fa-trophy"></i> Ranking</a>
+        </div>
+        <div style="padding: 20px; font-size: 11px; color: #bbb; text-align: center; border-top: 1px solid #f5f5f5;">
+            ©2025 Developed by<br><strong>Ibu Helmi Yunar</strong>
+        </div>
+    </nav>
 
-    <div class="leaderboard-container">
-        <table>
-            <thead>
-                <tr>
-                    <th>Pos</th>
-                    <th>Nama Peserta</th>
-                    <th>Skor</th>
-                </tr>
-            </thead>
-            <tbody id="ranking">
-                <tr>
-                    <td colspan="3" class="loading-text">
-                        <i class="fas fa-spinner fa-spin"></i> Menghubungkan ke Server...
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+    <div class="main-content">
+        <div class="topbar">
+            <div style="display: flex; align-items: center;">
+                <div class="menu-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></div>
+                <div style="font-weight: 800; color: var(--gold); font-size: 20px;">SMKN 7 LUWU</div>
+            </div>
+            <div style="font-weight: 700;">Ibu Helmi Yunar <i class="fas fa-user-circle" style="color: var(--gold); font-size: 30px; margin-left: 10px;"></i></div>
+        </div>
 
-    <div style="text-align: center;">
-        <a href="index.html" class="footer-link">
-            <i class="fas fa-chevron-left"></i> Kembali ke Dashboard Utama
-        </a>
+        <div class="header-box">
+            <i class="fas fa-trophy"></i>
+            <h1>LEADERBOARD QUIZ</h1>
+            <p>SMKN 7 LUWU - Jaringan Komputer</p>
+        </div>
+
+        <div class="leaderboard-container">
+            <table>
+                <thead>
+                    <tr><th>Pos</th><th>Nama Peserta</th><th>Skor</th></tr>
+                </thead>
+                <tbody id="ranking">
+                    <tr><td colspan="3" style="text-align: center; padding: 40px; opacity: 0.6;"><i class="fas fa-spinner fa-spin"></i> Menghubungkan ke Server...</td></tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 
 </body>
