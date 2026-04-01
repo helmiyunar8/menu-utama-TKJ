@@ -1,177 +1,225 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="id">
 <head>
-<title>LMS TKJ SMKN 7 LUWU</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LMS TKJ SMKN 7 LUWU - Helmi Yunar</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --gold: #D4AF37;
+            --dark-blue: #0f2a44;
+            --glass: rgba(255, 255, 255, 0.1);
+            --white: #ffffff;
+        }
 
-<style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Roboto, sans-serif; }
 
-body{
-font-family:Arial;
-background:#0f2a44;
-color:white;
-text-align:center;
-padding:30px;
-margin:0;
-}
+        body {
+            background: linear-gradient(135deg, #0f2a44 0%, #1f4f6a 100%);
+            background-attachment: fixed;
+            color: var(--white);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
 
-/* NAVBAR */
+        /* NAVBAR MEWAH */
+        .navbar {
+            width: 100%;
+            background: var(--white);
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
 
-.navbar{
-background:#f3f3f3;
-padding:15px;
-box-shadow:0 2px 5px rgba(0,0,0,0.2);
-}
+        .navbar-brand {
+            font-weight: 800;
+            color: var(--dark-blue);
+            font-size: 20px;
+            letter-spacing: 1px;
+        }
 
-.navbar-title{
-font-weight:bold;
-margin-bottom:8px;
-color:#222;
-}
+        .nav-links a {
+            text-decoration: none;
+            color: #555;
+            font-weight: 600;
+            margin-left: 20px;
+            font-size: 14px;
+            transition: 0.3s;
+        }
 
-.nav-links a{
-text-decoration:none;
-color:#333;
-font-weight:bold;
-margin:0 12px;
-}
+        .nav-links a:hover { color: var(--gold); }
 
-.nav-links a:hover{
-color:#007bff;
-}
+        /* HERO SECTION */
+        .hero {
+            text-align: center;
+            padding: 50px 20px;
+        }
 
-/* LOGO */
+        .logo {
+            width: 120px;
+            filter: drop-shadow(0 0 15px rgba(255,255,255,0.2));
+            margin-bottom: 20px;
+            transition: 0.5s;
+        }
+        .logo:hover { transform: rotate(5deg) scale(1.1); }
 
-.logo{
-width:100px;
-margin-top:25px;
-}
+        h1 { font-size: clamp(30px, 5vw, 50px); font-weight: 900; margin-bottom: 5px; letter-spacing: -1px; }
+        h2 { font-size: 20px; color: var(--gold); font-weight: 400; margin-bottom: 20px; opacity: 0.9; }
 
-/* JUDUL */
+        .teacher-info {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            padding: 10px 25px;
+            border-radius: 50px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            border: 1px solid rgba(255,255,255,0.2);
+            font-size: 14px;
+        }
 
-h1{
-font-size:40px;
-margin-bottom:5px;
-}
+        #datetime { margin-top: 15px; font-weight: 300; opacity: 0.8; font-size: 13px; }
 
-h2{
-margin-top:0;
-}
+        /* DASHBOARD GRID */
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 20px;
+            width: 90%;
+            max-width: 1000px;
+            padding: 40px 0;
+        }
 
-/* MENU UTAMA */
+        .card {
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            padding: 30px 20px;
+            border-radius: 24px;
+            text-decoration: none;
+            color: white;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
 
-/* DASHBOARD KOTAK */
+        .card i { font-size: 40px; color: var(--gold); transition: 0.3s; }
 
-.dashboard{
-display:grid;
-grid-template-columns:repeat(3,180px);
-gap:20px;
-justify-content:center;
-margin-top:40px;
-}
+        .card span { font-weight: 700; font-size: 16px; letter-spacing: 0.5px; }
 
-.card{
-background:#1f4f6a;
-padding:25px;
-border-radius:12px;
-text-decoration:none;
-color:white;
-font-size:18px;
-transition:0.3s;
-box-shadow:0 4px 10px rgba(0,0,0,0.3);
-}
+        .card:hover {
+            background: var(--gold);
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(212, 175, 55, 0.2);
+        }
 
-.card:hover{
-background:#ffd166;
-color:black;
-transform:scale(1.05);
-}
+        .card:hover i, .card:hover span { color: var(--dark-blue); }
 
-/* WATERMARK */
+        /* FOOTER */
+        .footer {
+            margin-top: auto;
+            padding: 30px;
+            font-size: 12px;
+            opacity: 0.6;
+            letter-spacing: 1px;
+        }
 
-.footer{
-margin-top:60px;
-font-size:14px;
-color:#ccc;
-opacity:0.8;
-}
-
-.main-menu a:hover{
-background:#ffd166;
-color:black;
-}
-
-</style>
-
-<script>
-
-function tanggal(){
-var hari = new Date();
-document.getElementById("tanggal").innerHTML =
-hari.toLocaleDateString();
-}
-
-</script>
-
+        /* RESPONSIVE */
+        @media (max-width: 600px) {
+            .dashboard { grid-template-columns: repeat(2, 1fr); }
+            .nav-links { display: none; } /* Sembunyikan nav di mobile demi kerapian */
+        }
+    </style>
 </head>
 
-<body onload="tanggal()">
+<body onload="updateTime()">
 
-<!-- NAVBAR -->
+    <div class="navbar">
+        <div class="navbar-brand">LMS PORTAL <span style="color:var(--gold)">V3</span></div>
+        <div class="nav-links">
+            <a href="index.html">BERANDA</a>
+            <a href="materi.html">MATERI</a>
+            <a href="tryout.html">TRYOUT</a>
+            <a href="ranking.html">RANKING</a>
+        </div>
+    </div>
 
-<div class="navbar">
+    <div class="hero">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/Logo_SMK.png" class="logo" alt="Logo SMK">
+        <h1>LMS TKJ</h1>
+        <h2>SMKN 7 LUWU</h2>
+        
+        <div class="teacher-info">
+            <i class="fas fa-user-tie" style="color:var(--gold)"></i>
+            <span>Guru: <b>Helmi Yunar</b></span>
+        </div>
+        
+        <p id="datetime"></p>
+    </div>
 
-<div class="navbar-title">SMK LMS PORTAL</div>
+    <div class="dashboard">
+        <a href="materi.html" class="card">
+            <i class="fas fa-book-open"></i>
+            <span>Materi</span>
+        </a>
 
-<div class="nav-links">
+        <a href="quiz10.html" class="card">
+            <i class="fas fa-brain"></i>
+            <span>Quiz</span>
+        </a>
 
-<a href="index.html">🏠 Beranda</a>
+        <a href="tryout.html" class="card">
+            <i class="fas fa-edit"></i>
+            <span>Tryout</span>
+        </a>
 
-<a href="materi.html">📚 Materi</a>
+        <a href="absensi.html" class="card">
+            <i class="fas fa-user-check"></i>
+            <span>Absensi</span>
+        </a>
 
-<a href="quiz.html">🧠 Quiz</a>
+        <a href="ranking.html" class="card">
+            <i class="fas fa-award"></i>
+            <span>Ranking</span>
+        </a>
 
-<a href="tryout.html">📝 Tryout</a>
+        <a href="sertifikat.html" class="card">
+            <i class="fas fa-certificate"></i>
+            <span>Sertifikat</span>
+        </a>
+    </div>
 
-<a href="ranking_minggu2.html">🏆 Ranking</a>
+    <div class="footer">
+        © 2026 LMS TKJ | Crafted with <i class="fas fa-heart" style="color:#e74c3c"></i> by Helmi Yunar
+    </div>
 
-</div>
-
-</div>
-
-<!-- LOGO -->
-
-<img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/Logo_SMK.png" class="logo">
-
-<h1>LMS TKJ</h1>
-<h2>SMKN 7 LUWU</h2>
-
-<p>Guru : Helmi Yunar</p>
-
-<p id="tanggal"></p>
-
-<!-- MENU UTAMA -->
-
-<div class="dashboard">
-
-<a href="materi.html" class="card">📚<br>Materi</a>
-
-<a href="quiz10.html" class="card">🧠<br>Quiz</a>
-
-<a href="tryout.html" class="card">📝<br>Tryout</a>
-
-<a href="absensi.html" class="card">📋<br>Absensi</a>
-
-<a href="ranking.html" class="card">🏆<br>Ranking</a>
-
-<a href="sertifikat.html" class="card">🎓<br>Sertifikat</a>
-
-</div>
+    <script>
+        function updateTime() {
+            const now = new Date();
+            const options = { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            };
+            document.getElementById("datetime").innerHTML = now.toLocaleDateString('id-ID', options);
+            setTimeout(updateTime, 1000);
+        }
+    </script>
 
 </body>
-  <div class="footer">
-© 2025 LMS TKJ | Developed by Helmi Yunar
-</div>
-
 </html>
-
