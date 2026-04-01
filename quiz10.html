@@ -1,293 +1,288 @@
 <!DOCTYPE html>
-
-<html>
-
+<html lang="id">
 <head>
-<title>Quiz TKJ</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz TKJ Pro - Helmi Yunar</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --gold: #D4AF37;
+            --dark-blue: #0f2a44;
+            --light-blue: #1a4d8c;
+            --white: #ffffff;
+            --glass: rgba(255, 255, 255, 0.1);
+        }
 
-<style>
-.navbar{
-background:#f3f3f3;
-padding:15px;
-border-radius:20px;
-margin-bottom:20px;
-box-shadow:0 2px 5px rgba(0,0,0,0.1);
-}
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
 
-.menu{
-margin-top:5px;
-}
+        body {
+            background: linear-gradient(135deg, #0f2a44 0%, #1a4d8c 100%);
+            background-attachment: fixed;
+            color: var(--white);
+            padding-bottom: 50px;
+        }
 
-.menu a{
-text-decoration:none;
-color:#333;
-font-weight:bold;
-margin-right:10px;
-}
+        /* NAVBAR */
+        .navbar {
+            background: var(--white);
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
 
-.menu a:hover{
-color:#007bff;
-}
-body{
-font-family:Arial;
-background:#0f2a44;
-color:white;
-padding:40px;
-line-height:1.7;
-}
+        .navbar-brand { font-weight: 800; color: var(--dark-blue); font-size: 18px; }
+        .nav-links a {
+            text-decoration: none; color: #555; font-weight: 600; margin-left: 15px; font-size: 13px; transition: 0.3s;
+        }
+        .nav-links a:hover { color: var(--gold); }
 
-button{
-padding:10px 20px;
-background:#ffd166;
-border:none;
-border-radius:6px;
-margin-top:20px;
-font-size:16px;
-}
+        /* QUIZ CONTAINER */
+        .quiz-container {
+            max-width: 800px;
+            margin: 30px auto;
+            background: var(--white);
+            color: #333;
+            padding: 40px;
+            border-radius: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
 
-input{
-margin-bottom:8px;
-}
+        /* TIMER STICKY */
+        #timer-box {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            background: var(--gold);
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: 800;
+            color: var(--dark-blue);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            z-index: 999;
+        }
 
-</style>
+        .header-quiz { text-align: center; margin-bottom: 30px; border-bottom: 2px solid #eee; padding-bottom: 20px; }
+        .header-quiz h1 { color: var(--dark-blue); font-size: 30px; }
 
-<script>
+        .input-group { margin-bottom: 20px; }
+        .input-group label { display: block; font-weight: 700; margin-bottom: 5px; color: var(--dark-blue); }
+        .input-group input {
+            width: 100%; padding: 12px; border: 2px solid #eee; border-radius: 10px; font-size: 16px; transition: 0.3s;
+        }
+        .input-group input:focus { border-color: var(--gold); outline: none; }
 
-var waktu = 600;
+        /* SOAL STYLE */
+        .question-box {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 20px;
+            margin-bottom: 25px;
+            border-left: 5px solid var(--gold);
+        }
+        .question-box p { font-weight: 700; font-size: 17px; margin-bottom: 15px; color: var(--dark-blue); }
 
-function hitung(){
+        .option {
+            display: block;
+            background: var(--white);
+            padding: 12px 20px;
+            border-radius: 12px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            border: 1px solid #ddd;
+            transition: 0.3s;
+        }
+        .option:hover { background: #fffcf0; border-color: var(--gold); }
+        .option input { margin-right: 10px; }
 
-var menit = Math.floor(waktu/60);
-var detik = waktu%60;
+        /* BUTTONS */
+        .btn-group { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 30px; }
+        button {
+            flex: 1; padding: 15px; border: none; border-radius: 15px;
+            font-weight: 800; font-size: 16px; cursor: pointer; transition: 0.3s;
+        }
+        .btn-cek { background: var(--dark-blue); color: white; }
+        .btn-serti { background: var(--gold); color: var(--dark-blue); display: none; }
+        button:hover { opacity: 0.9; transform: translateY(-3px); }
 
-document.getElementById("timer").innerHTML =
-"Waktu : " + menit + ":" + detik;
+        #hasil-box {
+            text-align: center; margin-top: 30px; padding: 20px;
+            border-radius: 20px; background: #e8f5e9; color: #2e7d32; display: none;
+        }
 
-waktu--;
+        @media (max-width: 600px) {
+            .quiz-container { padding: 20px; width: 95%; }
+            #timer-box { top: 15px; right: 15px; font-size: 12px; padding: 5px 15px; }
+        }
+    </style>
 
-if(waktu < 0){
-alert("Waktu habis!");
-}
+    <script>
+        var waktu = 600;
+        function hitung(){
+            var menit = Math.floor(waktu/60);
+            var detik = waktu%60;
+            document.getElementById("timer").innerHTML = "⌛ " + menit + ":" + (detik < 10 ? '0' : '') + detik;
+            
+            if(waktu <= 60) { document.getElementById("timer-box").style.background = "#e74c3c"; document.getElementById("timer-box").style.color = "#fff"; }
+            
+            waktu--;
+            if(waktu < 0){ 
+                clearInterval(timerInterval);
+                alert("Waktu habis! Jawaban akan dikirim otomatis.");
+                cek();
+            }
+        }
+        var timerInterval = setInterval(hitung, 1000);
 
-}
+        function kirimNilai(nilai){
+            var data = {
+                nama: document.getElementById("nama").value,
+                kelas: document.getElementById("kelas").value,
+                nilai: nilai
+            };
+            fetch("https://script.google.com/macros/s/AKfycbwaH3pjDzgRN3LOszk9tEJbGDhtBMNMI7mXi4Y1pNASoJPeV20xrIkKOgSSJTeKDlzEHQ/exec",{
+                method:"POST",
+                mode: "no-cors", // Penting untuk Apps Script
+                body:JSON.stringify(data)
+            });
+        }
 
-setInterval(hitung,1000);
+        function cek(){
+            clearInterval(timerInterval);
+            var nilai = 0;
+            var kunci = { q1:"A", q2:"B", q3:"C", q4:"A", q5:"B", q6:"C", q7:"A", q8:"B", q9:"C", q10:"A" };
 
+            for(let i=1; i<=10; i++){
+                if(document.querySelector(`input[name="q${i}"]:checked`)?.value == kunci[`q${i}`]){ nilai += 10; }
+            }
 
-function kirimNilai(nilai){
+            document.getElementById("hasil-box").style.display = "block";
+            document.getElementById("hasil").innerHTML = "SELAMAT! Nilai Anda: " + nilai;
+            document.getElementById("btn-serti").style.display = "block";
+            
+            kirimNilai(nilai);
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        }
 
-var data = {
-nama: document.getElementById("nama").value,
-kelas: document.getElementById("kelas").value,
-nilai: nilai
-};
+        function buatSertifikat(){
+            var nama = document.getElementById("nama").value || "SISWA";
+            var nilaiText = document.getElementById("hasil").innerText;
+            var canvas = document.createElement("canvas");
+            canvas.width = 1000; canvas.height = 650;
+            var ctx = canvas.getContext("2d");
 
-fetch("https://script.google.com/macros/s/AKfycbwaH3pjDzgRN3LOszk9tEJbGDhtBMNMI7mXi4Y1pNASoJPeV20xrIkKOgSSJTeKDlzEHQ/exec",{
-method:"POST",
-body:JSON.stringify(data)
-});
+            // Background & Border Emas
+            ctx.fillStyle = "#ffffff"; ctx.fillRect(0,0,1000,650);
+            ctx.strokeStyle = "#d4af37"; ctx.lineWidth = 20; ctx.strokeRect(30,30,940,590);
+            
+            // Judul
+            ctx.fillStyle = "#0f2a44"; ctx.textAlign = "center";
+            ctx.font = "bold 50px Arial"; ctx.fillText("SERTIFIKAT PRESTASI",500,120);
+            ctx.font = "24px Arial"; ctx.fillText("Diberikan kepada:",500,200);
 
-}
+            // Nama (Huruf Besar & Emas)
+            ctx.fillStyle = "#d4af37"; ctx.font = "bold 55px Georgia";
+            ctx.fillText(nama.toUpperCase(), 500, 280);
 
+            // Detail
+            ctx.fillStyle = "#333"; ctx.font = "24px Arial";
+            ctx.fillText("Telah menyelesaikan Quiz Kompetensi Jaringan (TKJ)",500,350);
+            ctx.font = "bold 35px Arial"; ctx.fillText(nilaiText, 500, 420);
+            
+            ctx.font = "italic 22px Arial"; ctx.fillText("SMKN 7 LUWU", 500, 480);
 
-function cek(){
+            // Tanggal & TTD
+            var tgl = new Date().toLocaleDateString('id-ID', { day:'numeric', month:'long', year:'numeric' });
+            ctx.font = "18px Arial"; ctx.fillText("Tanggal: " + tgl, 500, 520);
 
-var nilai = 0;
+            ctx.textAlign = "center"; ctx.fillText("Guru Pengampu", 800, 500);
+            ctx.font = "bold 22px Arial"; ctx.fillText("Helmi Yunar", 800, 600);
 
-if(document.querySelector('input[name="q1"]:checked')?.value=="A"){nilai+=10;}
-if(document.querySelector('input[name="q2"]:checked')?.value=="B"){nilai+=10;}
-if(document.querySelector('input[name="q3"]:checked')?.value=="C"){nilai+=10;}
-if(document.querySelector('input[name="q4"]:checked')?.value=="A"){nilai+=10;}
-if(document.querySelector('input[name="q5"]:checked')?.value=="B"){nilai+=10;}
-if(document.querySelector('input[name="q6"]:checked')?.value=="C"){nilai+=10;}
-if(document.querySelector('input[name="q7"]:checked')?.value=="A"){nilai+=10;}
-if(document.querySelector('input[name="q8"]:checked')?.value=="B"){nilai+=10;}
-if(document.querySelector('input[name="q9"]:checked')?.value=="C"){nilai+=10;}
-if(document.querySelector('input[name="q10"]:checked')?.value=="A"){nilai+=10;}
-
-document.getElementById("hasil").innerHTML = "Nilai kamu : " + nilai;
-
-kirimNilai(nilai);
-
-}
-function buatSertifikat(){
-
-var nama = document.getElementById("nama").value || "SISWA";
-var nilaiText = document.getElementById("hasil").innerText || "Nilai : -";
-
-// kanvas sertifikat
-var canvas = document.createElement("canvas");
-canvas.width = 1000;
-canvas.height = 650;
-var ctx = canvas.getContext("2d");
-
-// background
-ctx.fillStyle = "#ffffff";
-ctx.fillRect(0,0,1000,650);
-
-// border
-ctx.strokeStyle = "#d4af37";
-ctx.lineWidth = 10;
-ctx.strokeRect(20,20,960,610);
-
-// judul
-ctx.fillStyle = "#000";
-ctx.textAlign = "center";
-ctx.font = "bold 46px Arial";
-ctx.fillText("SERTIFIKAT PRESTASI",500,120);
-
-ctx.font = "22px Arial";
-ctx.fillText("Diberikan kepada",500,190);
-
-// nama siswa
-ctx.font = "bold 40px Arial";
-ctx.fillText(nama.toUpperCase(),500,260);
-
-// deskripsi
-ctx.font = "22px Arial";
-ctx.fillText("Telah menyelesaikan Quiz TKJ",500,320);
-
-// nilai
-ctx.font = "bold 28px Arial";
-ctx.fillText(nilaiText,500,370);
-
-// sekolah
-ctx.font = "22px Arial";
-ctx.fillText("SMKN 7 LUWU",500,430);
-
-// tanggal
-var tgl = new Date().toLocaleDateString();
-ctx.font = "18px Arial";
-ctx.fillText("Tanggal : " + tgl,500,470);
-
-// tanda tangan guru
-ctx.textAlign = "right";
-ctx.font = "18px Arial";
-ctx.fillText("Guru",850,500);
-
-// jika ada gambar tanda tangan
-var ttd = new Image();
-ttd.src = "ttd.png"; // ganti jika nama file berbeda
-ttd.onload = function(){
-ctx.drawImage(ttd,720,510,260,80);
-
-ctx.font = "bold 18px Arial";
-ctx.fillText("Helmi Yunar",900,610);
-
-downloadSertifikat(canvas);
-};
-
-// jika tidak ada gambar ttd tetap download
-setTimeout(function(){
-downloadSertifikat(canvas);
-},1000);
-
-function downloadSertifikat(canvas){
-var link = document.createElement("a");
-link.download = "sertifikat_quiz_tkj.png";
-link.href = canvas.toDataURL("image/png");
-link.click();
-}
-
-}
-
-</script>
-
+            // Download
+            var link = document.createElement("a");
+            link.download = "Sertifikat_TKJ_" + nama + ".png";
+            link.href = canvas.toDataURL("image/png");
+            link.click();
+        }
+    </script>
 </head>
-
 <body>
-<div class="navbar">
 
-<b>SMK LMS PORTAL</b>
+    <div id="timer-box"><span id="timer">Waktu : 10:00</span></div>
 
-<div class="menu">
+    <nav class="navbar">
+        <div class="navbar-brand">SMK LMS <span style="color:var(--gold)">PORTAL</span></div>
+        <div class="nav-links">
+            <a href="index.html">🏠 Beranda</a>
+            <a href="materi.html">📚 Materi</a>
+            <a href="tryout.html">📝 Tryout</a>
+        </div>
+    </nav>
 
-<a href="https://helmiyunar8.github.io/Materi-TKJ/index.html">🏠 Beranda</a>
+    <div class="quiz-container">
+        <div class="header-quiz">
+            <h1>Quiz Kompetensi Jaringan</h1>
+            <p>Silakan isi data diri dan jawab dengan teliti.</p>
+        </div>
 
-<a href="materi.html">📚 Materi</a>
+        <div class="input-group">
+            <label>Nama Lengkap</label>
+            <input type="text" id="nama" placeholder="Masukkan nama Anda...">
+        </div>
+        <div class="input-group">
+            <label>Kelas</label>
+            <input type="text" id="kelas" placeholder="Contoh: XI TKJ 1">
+        </div>
 
-<a href="quiz.html">🧠 Quiz</a>
+        <hr style="margin: 30px 0; opacity: 0.1;">
 
-<a href="tryout.html">📝 Tryout</a>
+        <div class="question-box">
+            <p>1. Apa kepanjangan dari LAN?</p>
+            <label class="option"><input type="radio" name="q1" value="A"> Local Area Network</label>
+            <label class="option"><input type="radio" name="q1" value="B"> Large Area Network</label>
+            <label class="option"><input type="radio" name="q1" value="C"> Long Area Network</label>
+        </div>
 
-<a href="ranking_minggu2.html">🏆 Ranking</a>
+        <div class="question-box">
+            <p>2. Perangkat utama untuk menghubungkan antar jaringan yang berbeda adalah?</p>
+            <label class="option"><input type="radio" name="q2" value="A"> Printer</label>
+            <label class="option"><input type="radio" name="q2" value="B"> Router</label>
+            <label class="option"><input type="radio" name="q2" value="C"> Scanner</label>
+        </div>
 
-</div>
+        <div class="question-box">
+            <p>10. Alamat unik fisik pada perangkat jaringan disebut?</p>
+            <label class="option"><input type="radio" name="q10" value="A"> MAC Address</label>
+            <label class="option"><input type="radio" name="q10" value="B"> IP Address</label>
+            <label class="option"><input type="radio" name="q10" value="C"> Username</label>
+        </div>
 
-</div>
-<h1>Quiz TKJ</h1>
+        <div id="hasil-box">
+            <h2 id="hasil"></h2>
+            <p>Sertifikat Anda siap diunduh di bawah ini.</p>
+        </div>
 
-<h2 id="timer">Waktu : 10:00</h2>
+        <div class="btn-group">
+            <button class="btn-cek" onclick="cek()"><i class="fas fa-paper-plane"></i> Kirim Jawaban</button>
+            <button id="btn-serti" class="btn-serti" onclick="buatSertifikat()"><i class="fas fa-certificate"></i> Download Sertifikat</button>
+        </div>
 
-<p>Nama</p>
-<input type="text" id="nama">
+        <div style="text-align: center; margin-top: 30px;">
+            <a href="materi.html" style="color: #888; text-decoration: none; font-size: 14px;">
+                <i class="fas fa-chevron-left"></i> Kembali ke Materi
+            </a>
+        </div>
+    </div>
 
-<p>Kelas</p>
-<input type="text" id="kelas">
-
-<p>1. Apa kepanjangan LAN?</p>
-<input type="radio" name="q1" value="A"> Local Area Network<br>
-<input type="radio" name="q1" value="B"> Large Area Network<br>
-<input type="radio" name="q1" value="C"> Long Area Network<br>
-
-<p>2. Perangkat untuk menghubungkan jaringan adalah?</p>
-<input type="radio" name="q2" value="A"> Printer<br>
-<input type="radio" name="q2" value="B"> Router<br>
-<input type="radio" name="q2" value="C"> Scanner<br>
-
-<p>3. IP Address digunakan untuk?</p>
-<input type="radio" name="q3" value="A"> Menyimpan file<br>
-<input type="radio" name="q3" value="B"> Menghidupkan komputer<br>
-<input type="radio" name="q3" value="C"> Identitas perangkat jaringan<br>
-
-<p>4. LAN adalah jaringan dalam?</p>
-<input type="radio" name="q4" value="A"> Area kecil<br>
-<input type="radio" name="q4" value="B"> Dunia<br>
-<input type="radio" name="q4" value="C"> Negara<br>
-
-<p>5. Kabel jaringan yang umum dipakai?</p>
-<input type="radio" name="q5" value="A"> HDMI<br>
-<input type="radio" name="q5" value="B"> UTP<br>
-<input type="radio" name="q5" value="C"> VGA<br>
-
-<p>6. Alat untuk menghubungkan banyak komputer?</p>
-<input type="radio" name="q6" value="A"> Mouse<br>
-<input type="radio" name="q6" value="B"> Keyboard<br>
-<input type="radio" name="q6" value="C"> Switch<br>
-
-<p>7. Router berfungsi untuk?</p>
-<input type="radio" name="q7" value="A"> Mengatur lalu lintas jaringan<br>
-<input type="radio" name="q7" value="B"> Menyimpan data<br>
-<input type="radio" name="q7" value="C"> Mengetik dokumen<br>
-
-<p>8. NIC adalah?</p>
-<input type="radio" name="q8" value="A"> Software<br>
-<input type="radio" name="q8" value="B"> Kartu jaringan<br>
-<input type="radio" name="q8" value="C"> Monitor<br>
-
-<p>9. Internet termasuk jaringan?</p>
-<input type="radio" name="q9" value="A"> LAN<br>
-<input type="radio" name="q9" value="B"> MAN<br>
-<input type="radio" name="q9" value="C"> WAN<br>
-
-<p>10. Alamat unik perangkat jaringan disebut?</p>
-<input type="radio" name="q10" value="A"> IP Address<br>
-<input type="radio" name="q10" value="B"> Username<br>
-<input type="radio" name="q10" value="C"> Password<br>
-
-<br>
-
-<button onclick="cek()">Cek Nilai</button>
-
-<h2 id="hasil"></h2>
-  <br>
-<button onclick="buatSertifikat()">Download Sertifikat</button>
-
-
-<br><br>
-
-<a href="materi.html">⬅ Kembali ke Materi</a>
+    <div style="text-align: center; padding: 20px; color: rgba(255,255,255,0.5); font-size: 12px;">
+        © 2026 Helmi Yunar | SMKN 7 LUWU
+    </div>
 
 </body>
-
 </html>
