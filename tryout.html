@@ -3,74 +3,80 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tryout Center - Helmi Yunar</title>
+    <title>Tryout Center - Ibu Helmi Yunar</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
         :root {
             --gold: #D4AF37;
-            --primary-green: #2e7d32;
-            --dark-green: #1b5e20;
+            --dark-gold: #B8860B;
             --white: #ffffff;
             --bg-soft: #f4f7f6;
-            --sidebar-width: 280px; /* Standar Master */
+            --sidebar-width: 280px;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; }
+        body { background-color: var(--bg-soft); display: flex; min-height: 100vh; color: #333; overflow-x: hidden; }
 
-        body { background-color: var(--bg-soft); display: flex; min-height: 100vh; color: #333; }
+        /* OVERLAY GELAP SMKN 7 */
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+        }
+        .sidebar-overlay.active { display: block; }
 
-        /* SIDEBAR (STANDAR PREMIUM SMKN 7 LUWU) */
+        /* SIDEBAR NAVIGATION */
         .sidebar {
             width: var(--sidebar-width); background: var(--white); height: 100vh;
-            position: fixed; border-right: 1px solid #ddd; transition: 0.3s;
-            z-index: 1000; display: flex; flex-direction: column;
+            position: fixed; border-right: 1px solid #ddd; transition: 0.3s ease;
+            z-index: 1001; display: flex; flex-direction: column;
+        }
+        
+        .close-sidebar {
+            display: none;
+            position: absolute;
+            top: 15px; right: 15px;
+            font-size: 28px;
+            color: var(--gold);
+            cursor: pointer;
+            z-index: 1002;
         }
 
         .sidebar-header { 
-            padding: 35px 20px; /* Standar Master */
-            text-align: center; 
-            border-bottom: 2px solid #f9f9f9; 
+            padding: 35px 20px; text-align: center; border-bottom: 2px solid #f9f9f9; position: relative;
         }
+        /* PEMANGGILAN LOGO SESUAI GAMBAR 1 */
         .sidebar-header img { width: 75px; margin-bottom: 12px; }
-        .sidebar-header h3 { 
-            font-size: 22px; /* Standar Master */
-            color: var(--gold); 
-            font-weight: 800; 
-            letter-spacing: -0.5px; /* Rapat sesuai Gambar 1 */
-            text-transform: uppercase;
-        }
-        .sidebar-header p {
-            font-size: 14px; color: #777; font-weight: 600; margin-top: 5px;
-        }
+        .sidebar-header h3 { font-size: 22px; color: var(--gold); font-weight: 800; text-transform: uppercase; }
+        .sidebar-header p { font-size: 14px; color: #777; font-weight: 600; margin-top: 5px; }
 
-        .nav-menu { padding: 25px 0; flex-grow: 1; }
+        .nav-menu { padding: 25px 0; flex-grow: 1; overflow-y: auto; }
         .nav-item {
-            display: flex; align-items: center; 
-            padding: 18px 25px; /* Standar Master */
-            color: #444; text-decoration: none; 
-            font-size: 18px; /* Standar Master - SAMA DENGAN BERANDA */
-            font-weight: 600; transition: 0.3s;
+            display: flex; align-items: center; padding: 18px 25px;
+            color: #444; text-decoration: none; font-size: 18px; font-weight: 600; transition: 0.3s;
         }
         .nav-item i { margin-right: 18px; width: 25px; text-align: center; font-size: 20px; }
         .nav-item:hover, .nav-item.active { background: #fffcf0; color: var(--gold); border-left: 6px solid var(--gold); }
 
-        /* MAIN CONTENT */
-        .main-content { flex-grow: 1; margin-left: var(--sidebar-width); padding: 25px; width: 100%; }
+        /* CONTENT AREA */
+        .main-content { flex-grow: 1; margin-left: var(--sidebar-width); padding: 25px; width: 100%; transition: 0.3s; }
 
         .topbar {
-            background: var(--white); padding: 18px 30px; border-radius: 15px;
+            background: var(--white); padding: 20px 30px; border-radius: 15px;
             display: flex; justify-content: space-between; align-items: center;
             box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 30px;
         }
+        .menu-toggle { display: none; font-size: 24px; cursor: pointer; color: var(--gold); margin-right: 15px; }
 
         /* DASHBOARD SECTION */
         .header-section { text-align: center; margin-bottom: 40px; }
-        .header-section h2 { font-size: 30px; color: var(--primary-green); font-weight: 800; }
+        .header-section h2 { font-size: 30px; color: var(--gold); font-weight: 800; }
         
-        .status-container {
-            display: flex; justify-content: center; gap: 15px; margin-top: 20px; flex-wrap: wrap;
-        }
+        .status-container { display: flex; justify-content: center; gap: 15px; margin-top: 20px; flex-wrap: wrap; }
         .status-pill {
             padding: 8px 20px; border-radius: 50px; font-size: 14px; font-weight: 800;
             display: flex; align-items: center; gap: 10px; border: 1px solid #eee;
@@ -91,37 +97,43 @@
             text-decoration: none; color: inherit; border: 1px solid #eee;
             transition: 0.3s; text-align: center; display: flex; flex-direction: column; align-items: center;
         }
-        .card:hover { transform: translateY(-10px); border-color: var(--gold); box-shadow: 0 15px 35px rgba(212,175,55,0.1); }
+        .card:hover { transform: translateY(-10px); border-color: var(--gold); box-shadow: 0 15px 35px rgba(212,175,55,0.15); }
         
         .icon-box {
-            width: 70px; height: 70px; background: #fdfaf0; border-radius: 20px;
+            width: 75px; height: 75px; background: #fffcf0; border-radius: 22px;
             display: flex; align-items: center; justify-content: center;
-            font-size: 30px; color: var(--gold); margin-bottom: 20px;
+            font-size: 32px; color: var(--gold); margin-bottom: 20px; border: 1px solid #f1e0ac;
         }
 
-        .card h4 { font-size: 20px; margin-bottom: 10px; color: var(--primary-green); font-weight: 800; }
+        .card h4 { font-size: 20px; margin-bottom: 10px; color: #444; font-weight: 800; }
         .card p { font-size: 15px; color: #777; margin-bottom: 25px; line-height: 1.5; }
 
         .btn-start {
-            width: 100%; padding: 12px; border-radius: 12px;
-            background: var(--gold); color: white; font-weight: 800; font-size: 15px;
-            border: none; cursor: pointer; transition: 0.3s;
+            width: 100%; padding: 14px; border-radius: 12px;
+            background: linear-gradient(135deg, #d4af37 0%, #b8860b 100%);
+            color: white; font-weight: 800; font-size: 14px; text-transform: uppercase;
+            border: none; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 10px rgba(184, 134, 11, 0.3);
         }
-        .btn-locked { background: #f0f0f0; color: #aaa; cursor: not-allowed; }
-        .btn-guru { background: var(--primary-green); color: white; }
+        .btn-locked { background: #f0f0f0; color: #aaa; cursor: not-allowed; box-shadow: none; background: #eee; }
+        .btn-guru { background: #444; }
 
         @media (max-width: 768px) {
-            .sidebar { left: -100%; }
-            .sidebar.active { left: 0; }
-            .main-content { margin-left: 0; }
+            .menu-toggle, .close-sidebar { display: block; }
+            .sidebar { left: -100%; box-shadow: 5px 0 15px rgba(0,0,0,0.2); }
+            .sidebar.active { left: 0 !important; }
+            .main-content { margin-left: 0; padding: 15px; }
+            .title-bar { font-size: 16px; }
         }
     </style>
 </head>
 <body>
 
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
     <nav class="sidebar" id="sidebar">
+        <div class="close-sidebar" onclick="toggleSidebar()"><i class="fas fa-times"></i></div>
         <div class="sidebar-header">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/Logo_SMK.png" alt="Logo">
+            <img src="../logo.png" alt="Logo SMKN 7" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/6/6b/Logo_SMK.png'">
             <h3>LMS TKJ</h3>
             <p>SMKN 7 LUWU</p>
         </div>
@@ -132,15 +144,20 @@
             <a href="/lkpd/index.html" class="nav-item"><i class="fas fa-file-alt"></i> LKPD</a>
             <a href="/absen/index.html" class="nav-item"><i class="fas fa-camera"></i> Absen</a>
             <a href="/tryout-tkj-XII-2026/ranking_minggu2.html" class="nav-item"><i class="fas fa-trophy"></i> Ranking</a>
+            <a href="/arsip.html" class="nav-item"><i class="fas fa-archive"></i> ARSIP</a>
+        </div>
+        <div style="padding: 20px; font-size: 11px; color: #bbb; text-align: center; border-top: 1px solid #f5f5f5;">
+            ©2025 Developed by<br><strong>Ibu Helmi Yunar</strong>
         </div>
     </nav>
 
     <div class="main-content">
         <div class="topbar">
-            <div style="font-weight: 800; color: var(--gold); font-size: 18px; cursor:pointer;" onclick="toggleSidebar()">
-                <i class="fas fa-bars" style="margin-right: 10px;"></i> SMKN 7 LUWU
+            <div style="display: flex; align-items: center;">
+                <div class="menu-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></div>
+                <div style="font-weight: 800; color: var(--gold); font-size: 18px;">SMKN 7 LUWU</div>
             </div>
-            <div style="font-size: 14px; font-weight: 700;">PUSAT TRYOUT SISWA</div>
+            <div class="title-bar" style="font-size: 14px; font-weight: 700; color: #555;">PUSAT TRYOUT</div>
         </div>
 
         <div class="header-section">
@@ -156,7 +173,7 @@
                 <div class="icon-box"><i class="fas fa-history"></i></div>
                 <h4>Tryout Minggu 1</h4>
                 <p>Materi Dasar Jaringan & KIK (Kelas X/XI)</p>
-                <div class="btn-start" style="background:var(--primary-green)">REVIEW HASIL</div>
+                <div class="btn-start">REVIEW HASIL</div>
             </a>
 
             <div class="card" id="card2">
@@ -183,7 +200,7 @@
     </div>
 
     <script>
-        // LOGIKA JADWAL PAK HELMI
+        // LOGIKA JADWAL IBU HELMI
         let bukaTryout = new Date("2026-03-12 07:00:00");
         let sekarang = new Date();
 
@@ -192,28 +209,26 @@
         const icon2 = document.getElementById("icon2");
 
         if(sekarang < bukaTryout){
-            // Kondisi Terkunci
             statusPill.className = "status-pill pill-locked";
             statusPill.innerHTML = '<i class="fas fa-lock"></i> MINGGU 2: BELUM DIBUKA';
-            
             link2.onclick = function(e){
                 e.preventDefault();
                 alert("Sabar ya! Tryout Minggu 2 baru dibuka pada 12 Maret 2026 jam 07:00");
             }
         } else {
-            // Kondisi Aktif
             statusPill.className = "status-pill pill-active";
             statusPill.innerHTML = '<i class="fas fa-unlock"></i> MINGGU 2: SEDANG AKTIF';
-            
-            icon2.style.color = "#f57f17";
+            icon2.style.color = "#D4AF37";
             link2.href = "../tryout-tkj-XII-2026/minggu2.html";
             link2.innerHTML = "MULAI UJIAN SEKARANG";
             link2.className = "btn-start";
-            link2.style.background = "#D4AF37";
         }
 
         function toggleSidebar() {
-            document.getElementById('sidebar').classList.toggle('active');
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            sidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
         }
     </script>
 </body>
